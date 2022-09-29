@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="br">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" sizes="32x32" href=".assets/images/favicon-32x32.png">
+  <link rel="stylesheet" type="text/css" href="./styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>Notifications page</title>
+</head>
+<body>
+
+
+
+
+    <div id="app_notifications" class="container">
+
+        <div class="container-title-mark-read">
+          <div class="container-title-notifications">
+            <h1>Notifications</h1>
+            <p v-if="verificaNaoLidas() > 0">{{verificaNaoLidas()}}</p>
+          </div>
+          <a v-if="verificaNaoLidas() > 0" v-on:click="marcarTodasComoLidas();">Marcas todas como lidas</a>
+        </div>
+
+        <div  class="container-conteudo">
+
+          <div v-for="notification in notifications" v-bind:style="bgcolors[notification.lido]" v-on:click="notification.lido = 1" class="item-notification">
+            <div class="item-notification-img-texto">
+              <img :src="'./assets/images/' + notification.foto + '.webp'"  >
+              <div class="item-notification-textos">
+                <div class="item-notification-atividade">
+                  <h3>{{notification.nome}}</h3>
+                  <p>{{notification.atividade}}</p>
+                  <h3 v-if class="">{{notification.link}}</h3> 
+                  <span v-if="notification.lido == 0" class="dot"></span>
+                </div>
+                <h4>{{notification.tempo}}</h4>
+              </div>
+              <img v-if="notification.image" class="item-notification-img-corpo" :src="'./assets/images/' + notification.image + '.webp'"  >
+            </div>
+            <h5 v-if="notification.mensagem" class="item-notification-mensagem">{{notification.mensagem}}</h5>
+            
+          </div>
+
+        </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app_notifications",
+        data: {
+           notifications : [
+            { nome : 'Mark Webber', atividade: 'reagiu ao seu post', link: 'Meu primeiro post!', tempo: 'agora', foto: 'avatar-mark-webber',mensagem: '',image: '', lido: 0},
+            { nome : 'Angela Gray', atividade : 'te enviou uma mensagem', link: '', tempo: 'há 1m', foto: 'avatar-angela-gray', mensagem: 'Tempor velit commodo laborum aliqua Lorem voluptate veniam anim.',image: '', lido: 0},
+            { nome : 'Jacob Thompson', atividade : 'entrou no grupo', link: 'Meu grupo', tempo: 'há 5m' , foto: 'avatar-jacob-thompson',mensagem: '',image: '', lido: 0},
+            { nome : 'Rizky Hasanuddin', atividade: 'seguiu voce',link: '', tempo: 'há 1h', foto: 'avatar-rizky-hasanuddin',mensagem: '',image: '', lido: 0},
+            { nome : 'Kimberly Smith', atividade: 'comentou sua foto',link: '', tempo: 'há 1h', foto: 'avatar-kimberly-smith', mensagem: '',image: 'image-chess', lido: 0},
+          ],
+          bgcolors: [
+            'background-color: hsl(205, 33%, 90%);',
+            'background-color: hsl(210, 60%, 98%);'
+          ],
+        },
+        methods: {           
+            verificaNaoLidas() {
+               return this.notifications.filter(notification => 
+                  notification.lido == 0
+                ).length
+            },
+            marcarTodasComoLidas() {
+              this.notifications.map(notification => {
+                notification.lido = 1
+              })
+            }
+
+        }
+      })
+    </script>
+
+</body>
+</html>
